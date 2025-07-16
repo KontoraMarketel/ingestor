@@ -29,15 +29,16 @@ def fetch_sales_data(api_token, nm_ids: list, yesterday: str):
 
         response = requests.post(url, headers=headers, json=payload)
         if response.status_code != 200:
-            raise Exception(
-                "Invalid response from WB API",
-                f"response: {response.text}",
-                f"status_code: {response.status_code}"
-            )
+        # raise Exception(
+        #     "Invalid response from WB API",
+        #     f"response: {response.text}",
+        #     f"status_code: {response.status_code}"
+        # )
+            logging.error("Failed to fetch data from NM IDs: {}".format(batch))
 
         data = response.json()['data']
         result.extend(data)
-        sleep(70)
+        sleep(4)
 
     # Формируем имя файла
     filename = "sales.json"
