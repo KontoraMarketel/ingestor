@@ -6,7 +6,8 @@ import boto3
 
 from kafka import KafkaConsumer, KafkaProducer
 
-from fetchers import fetch_all_cards, fetch_commissions, fetch_all_prices, fetch_sales_data, fetch_ad_metrics
+from fetchers import fetch_all_cards, fetch_commissions, fetch_all_prices, fetch_sales_data, fetch_ad_metrics, \
+    fetch_fbs_orders
 from time_utils import get_yesterday_moscow_from_utc
 
 
@@ -75,13 +76,15 @@ def ingest(api_token, endpoint_url, access_key, secret_key, bucket, task_id, loa
     prices_filename, prices_raw = fetch_all_prices(api_token)
     sales_filename, sales_raw = fetch_sales_data(api_token, nm_ids, get_yesterday_moscow_from_utc(load_date))
     ad_metrics_filename, ad_metrics_raw = fetch_ad_metrics(api_token, get_yesterday_moscow_from_utc(load_date))
+    fbs_orders_filename, fbs_orders_raw = fetch_fbs_orders(api_token, get_yesterday_moscow_from_utc(load_date))
 
     save_data = [
         [commissions_filename, commissions_raw],
         [prices_filename, prices_raw],
         [cards_filename, cards_raw],
         [sales_filename, sales_raw],
-        [ad_metrics_filename, ad_metrics_raw]
+        [ad_metrics_filename, ad_metrics_raw],
+        [fbs_orders_filename, fbs_orders_raw],
     ]
 
     for save_data in save_data:
