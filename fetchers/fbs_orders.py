@@ -14,7 +14,7 @@ def fetch_fbs_orders(api_token: str, yesterday: str):
     next_val = 0
     all_orders = []
 
-    yesterday_unix = datetime.datetime.strptime(yesterday, "%Y-%m-%d").timestamp()
+    yesterday_unix = int(datetime.datetime.strptime(yesterday, "%Y-%m-%d").timestamp())
 
     while True:
         params = {
