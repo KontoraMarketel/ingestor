@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 
 import requests
 
@@ -15,6 +16,8 @@ def fetch_fbs_orders(api_token: str, yesterday: str):
     all_orders = []
 
     yesterday_unix = int(datetime.datetime.strptime(yesterday, "%Y-%m-%d").timestamp())
+    logging.info("Fetching FBS orders...")
+    logging.info("Yesterday: %s", yesterday)
 
     while True:
         params = {
@@ -27,11 +30,14 @@ def fetch_fbs_orders(api_token: str, yesterday: str):
         response = requests.get(url, headers=headers, params=params)
         response.raise_for_status()
 
+        logging.info("FBS orders batch fetched, length: %s", len(response.json()['orders']))
+
         data = response.json()
         orders = data.get("orders", [])
         all_orders.extend(orders)
 
         next_val = data.get("next", 0)
+        logging.info("Next value: %s", next_val)
         if not orders or next_val == 0:
             break
 
