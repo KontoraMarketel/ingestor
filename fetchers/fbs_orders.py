@@ -1,3 +1,4 @@
+import datetime
 import json
 
 import requests
@@ -13,12 +14,14 @@ def fetch_fbs_orders(api_token: str, yesterday: str):
     next_val = 0
     all_orders = []
 
+    yesterday_unix = datetime.datetime.strptime(yesterday, "%Y-%m-%d").timestamp()
+
     while True:
         params = {
             "limit": limit,
             "next": next_val,
-            "dateFrom": yesterday,
-            "dateTo": yesterday
+            "dateFrom": yesterday_unix,
+            "dateTo": yesterday_unix
         }
 
         response = requests.get(url, headers=headers, params=params)
