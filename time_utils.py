@@ -13,3 +13,5 @@ def get_yesterday_moscow_from_utc(utc_time: str) -> str:
     # Приводим к нужному формату
     formatted = yesterday_moscow.strftime("%Y-%m-%d")
     return formatted
+
+

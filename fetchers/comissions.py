@@ -9,8 +9,9 @@ def fetch_commissions(api_token, boto_client: BaseClient, prefix: str):
         "Authorization": api_token
     }
     url = "https://common-api.wildberries.ru/api/v1/tariffs/commission"
-    response = requests.get(url, headers=headers)
 
+
+    response = requests.get(url, headers=headers)
     if response.status_code != 200:
         raise Exception(
             "Invalid response from WB API",
