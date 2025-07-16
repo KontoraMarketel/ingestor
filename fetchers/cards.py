@@ -12,6 +12,7 @@ def fetch_all_cards(api_token, boto_client: BaseClient, prefix: str):
     limit = 100
     cursor = None
     all_cards = []
+    nm_ids = []
 
     while True:
         payload = {
@@ -40,6 +41,8 @@ def fetch_all_cards(api_token, boto_client: BaseClient, prefix: str):
         total = cursor_data.get("total", 0)
 
         all_cards.extend(cards)
+        for card in cards:
+            nm_ids.append(card['nmID'])
 
         if total == 0:
             break
@@ -50,7 +53,7 @@ def fetch_all_cards(api_token, boto_client: BaseClient, prefix: str):
         }
 
     # Формируем имя файла
-    object_key = f"{prefix}all_cards.json"
+    object_key = prefix + "all_cards.json"
 
     raw_data_str = json.dumps(all_cards, indent=2)
 
@@ -61,3 +64,5 @@ def fetch_all_cards(api_token, boto_client: BaseClient, prefix: str):
         Body=raw_data_str,
         ContentType='application/json',
     )
+
+    return nm_ids

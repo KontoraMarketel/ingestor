@@ -36,7 +36,7 @@ def fetch_all_prices(api_token, boto_client: BaseClient, prefix: str):
         offset += limit
 
     # Формируем имя файла
-    object_key = f"{prefix}all_prices.json"
+    object_key = prefix + "all_prices.json"
 
     raw_data_str = json.dumps(result, indent=2)
 

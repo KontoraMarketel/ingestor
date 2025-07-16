@@ -6,7 +6,8 @@ import boto3
 
 from kafka import KafkaConsumer, KafkaProducer
 
-from fetchers import fetch_all_cards, fetch_commissions, fetch_all_prices
+from fetchers import fetch_all_cards, fetch_commissions, fetch_all_prices, fetch_sales_data
+from time_utils import get_yesterday_moscow_from_utc
 
 
 def main():
@@ -69,8 +70,9 @@ def ingest(api_token, endpoint_url, access_key, secret_key, bucket, task_id, loa
     prefix = f"{load_date}/{task_id}/"
 
     fetch_commissions(api_token, s3_client, prefix)
-    fetch_all_cards(api_token, s3_client, prefix)
+    nm_ids = fetch_all_cards(api_token, s3_client, prefix)
     fetch_all_prices(api_token, s3_client, prefix)
+    fetch_sales_data(api_token, s3_client, prefix, nm_ids, get_yesterday_moscow_from_utc(load_date))
 
     logging.info("Data successfully uploaded to minio")
 
