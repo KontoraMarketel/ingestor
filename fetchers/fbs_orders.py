@@ -15,17 +15,21 @@ def fetch_fbs_orders(api_token: str, yesterday: str):
     next_val = 0
     all_orders = []
 
-    yesterday_unix = int(datetime.datetime.strptime(yesterday, "%Y-%m-%d").timestamp())
+    date_from = datetime.datetime.strptime(yesterday, "%Y-%m-%d")
+    date_to = date_from + datetime.timedelta(days=1)
+
     logging.info("Fetching FBS orders...")
-    logging.info("Yesterday: %s", yesterday)
-    logging.info("Yesterday unix: %s", yesterday_unix)
+    logging.info("Datefrom: %s", date_from)
+    logging.info("Datefrom unix: %s", date_from.timestamp())
+    logging.info("Dateto: %s", date_to)
+    logging.info("Dateto unix: %s", date_to.timestamp())
 
     while True:
         params = {
             "limit": limit,
             "next": next_val,
-            "dateFrom": yesterday_unix,
-            "dateTo": yesterday_unix
+            "dateFrom": int(date_from.timestamp()),
+            "dateTo": int(date_to.timestamp()),
         }
 
         response = requests.get(url, headers=headers, params=params)
