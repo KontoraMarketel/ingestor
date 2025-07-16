@@ -6,6 +6,7 @@ import boto3
 
 from kafka import KafkaConsumer, KafkaProducer
 
+from cards import fetch_all_cards
 from comissions import fetch_commissions
 
 
@@ -69,6 +70,7 @@ def ingest(api_token, endpoint_url, access_key, secret_key, bucket, task_id, loa
     prefix = f"{load_date}/{task_id}/"
 
     fetch_commissions(api_token, s3_client, prefix)
+    fetch_all_cards(api_token, s3_client, prefix)
 
     logging.info("Data successfully uploaded to minio")
 
