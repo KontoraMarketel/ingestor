@@ -35,6 +35,7 @@ def fetch_sales_data(api_token, nm_ids: list, yesterday: str):
         #     f"status_code: {response.status_code}"
         # )
             logging.error("Failed to fetch data from NM IDs: {}".format(batch))
+            continue
 
         data = response.json()['data']
         result.extend(data)
