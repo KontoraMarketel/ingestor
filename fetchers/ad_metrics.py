@@ -31,7 +31,7 @@ def fetch_ad_metrics(api_token, yesterday: str):
         batch = stats_data[i:i + batch_size]
         adv_ids = [item['advertId'] for item in batch]
         url = "https://advert-api.wildberries.ru/adv/v1/promotion/adverts"
-        response = requests.get(url, headers=headers, json=adv_ids)
+        response = requests.post(url, headers=headers, json=adv_ids)
         response.raise_for_status()
         adverts.extend(response.json())
         sleep(0.6)
