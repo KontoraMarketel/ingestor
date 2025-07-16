@@ -68,27 +68,27 @@ def ingest(api_token, endpoint_url, access_key, secret_key, bucket, task_id, loa
 
     # Префикс куда сохранять инжесты
     prefix = f"{load_date}/{task_id}/"
-
-    commissions_filename, commissions_raw = fetch_commissions(api_token)
-    nm_ids, cards_filename, cards_raw = fetch_all_cards(api_token)
-    prices_filename, prices_raw = fetch_all_prices(api_token)
-    sales_filename, sales_raw = fetch_sales_data(api_token, nm_ids, get_yesterday_moscow_from_utc(load_date))
-
-    save_data = [
-        [commissions_filename, commissions_raw],
-        [prices_filename, prices_raw],
-        [cards_filename, cards_raw],
-        [sales_filename, sales_raw],
-    ]
-
-    for save_data in save_data:
-        # Загружаем в S3
-        s3_client.put_object(
-            Bucket="ingests",
-            Key=save_data[0],
-            Body=save_data[1],
-            ContentType='application/json',
-        )
+    #
+    # commissions_filename, commissions_raw = fetch_commissions(api_token)
+    # nm_ids, cards_filename, cards_raw = fetch_all_cards(api_token)
+    # prices_filename, prices_raw = fetch_all_prices(api_token)
+    # sales_filename, sales_raw = fetch_sales_data(api_token, nm_ids, get_yesterday_moscow_from_utc(load_date))
+    #
+    # save_data = [
+    #     [commissions_filename, commissions_raw],
+    #     [prices_filename, prices_raw],
+    #     [cards_filename, cards_raw],
+    #     [sales_filename, sales_raw],
+    # ]
+    #
+    # for save_data in save_data:
+    #     # Загружаем в S3
+    #     s3_client.put_object(
+    #         Bucket="ingests",
+    #         Key=save_data[0],
+    #         Body=save_data[1],
+    #         ContentType='application/json',
+    #     )
 
     logging.info("Data successfully uploaded to minio")
 
