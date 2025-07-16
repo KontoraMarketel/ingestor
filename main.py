@@ -85,7 +85,7 @@ def ingest(api_token, endpoint_url, access_key, secret_key, bucket, task_id, loa
         # Загружаем в S3
         s3_client.put_object(
             Bucket="ingests",
-            Key=save_data[0],
+            Key=prefix + save_data[0],
             Body=save_data[1],
             ContentType='application/json',
         )
