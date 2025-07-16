@@ -18,6 +18,7 @@ def fetch_fbs_orders(api_token: str, yesterday: str):
     yesterday_unix = int(datetime.datetime.strptime(yesterday, "%Y-%m-%d").timestamp())
     logging.info("Fetching FBS orders...")
     logging.info("Yesterday: %s", yesterday)
+    logging.info("Yesterday unix: %s", yesterday_unix)
 
     while True:
         params = {
