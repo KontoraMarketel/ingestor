@@ -39,7 +39,6 @@ def fetch_sales_data(api_token, nm_ids: list, yesterday: str):
 
         data = response.json()['data']
         result.extend(data)
-        sleep(4)
 
     # Формируем имя файла
     filename = "sales.json"
