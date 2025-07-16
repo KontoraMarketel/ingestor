@@ -27,7 +27,8 @@ def main():
         bootstrap_servers=bootstrap_servers,
         enable_auto_commit=True,
         auto_offset_reset='earliest',
-        group_id='ingestors'
+        group_id='ingestors',
+        max_poll_interval_ms=24 * 60 * 60 * 1000  # 24 часа
     )
     for message in consumer:
         message = json.loads(message.value)
