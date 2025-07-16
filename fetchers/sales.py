@@ -1,11 +1,12 @@
 import json
+import logging
 from time import sleep
 
 import requests
 from botocore.client import BaseClient
 
 
-def fetch_sales_data(api_token, boto_client: BaseClient, prefix: str, nm_ids: list, yesterday: str):
+def fetch_sales_data(api_token, nm_ids: list, yesterday: str):
     headers = {
         "Authorization": api_token
     }
@@ -15,7 +16,7 @@ def fetch_sales_data(api_token, boto_client: BaseClient, prefix: str, nm_ids: li
 
     for i in range(0, len(nm_ids), batch_size):
         batch = nm_ids[i:i + batch_size]
-
+        logging.info("Fetching data from NM IDs: {}".format(batch))
         payload = {
             "nmIDs": batch,
             "period": {
@@ -39,14 +40,7 @@ def fetch_sales_data(api_token, boto_client: BaseClient, prefix: str, nm_ids: li
         sleep(70)
 
     # Формируем имя файла
-    object_key = prefix + "sales.json"
+    filename = "sales.json"
 
     raw_data_str = json.dumps(result, indent=2)
-
-    # Загружаем в S3
-    boto_client.put_object(
-        Bucket="ingests",
-        Key=object_key,
-        Body=raw_data_str,
-        ContentType='application/json',
-    )
+    return filename, raw_data_str

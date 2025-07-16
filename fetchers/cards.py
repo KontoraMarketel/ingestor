@@ -1,10 +1,9 @@
 import json
 
 import requests
-from botocore.client import BaseClient
 
 
-def fetch_all_cards(api_token, boto_client: BaseClient, prefix: str):
+def fetch_all_cards(api_token):
     headers = {
         "Authorization": api_token
     }
@@ -53,16 +52,8 @@ def fetch_all_cards(api_token, boto_client: BaseClient, prefix: str):
         }
 
     # Формируем имя файла
-    object_key = prefix + "all_cards.json"
+    filename = "all_cards.json"
 
     raw_data_str = json.dumps(all_cards, indent=2)
 
-    # Загружаем в S3
-    boto_client.put_object(
-        Bucket="ingests",
-        Key=object_key,
-        Body=raw_data_str,
-        ContentType='application/json',
-    )
-
-    return nm_ids
+    return nm_ids, filename, raw_data_str

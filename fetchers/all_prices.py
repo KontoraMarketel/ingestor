@@ -1,10 +1,9 @@
 import json
 
 import requests
-from botocore.client import BaseClient
 
 
-def fetch_all_prices(api_token, boto_client: BaseClient, prefix: str):
+def fetch_all_prices(api_token):
     headers = {
         "Authorization": api_token
     }
@@ -36,14 +35,16 @@ def fetch_all_prices(api_token, boto_client: BaseClient, prefix: str):
         offset += limit
 
     # Формируем имя файла
-    object_key = prefix + "all_prices.json"
+    filename = "all_prices.json"
 
     raw_data_str = json.dumps(result, indent=2)
 
-    # Загружаем в S3
-    boto_client.put_object(
-        Bucket="ingests",
-        Key=object_key,
-        Body=raw_data_str,
-        ContentType='application/json',
-    )
+    return filename, raw_data_str
+
+    # # Загружаем в S3
+    # boto_client.put_object(
+    #     Bucket="ingests",
+    #     Key=object_key,
+    #     Body=raw_data_str,
+    #     ContentType='application/json',
+    # )
