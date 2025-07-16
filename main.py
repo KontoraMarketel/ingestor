@@ -76,8 +76,8 @@ def ingest(api_token, endpoint_url, access_key, secret_key, bucket, task_id, loa
 
     producer = KafkaProducer(
         bootstrap_servers=bootstrap_servers,
-        enable_auto_commit=True,
-        auto_offset_reset='earliest',
+        value_serializer=lambda v: json.dumps(v).encode("utf-8"),
+        key_serializer=lambda v: v.encode("utf-8"),
     )
 
     body = {
@@ -85,7 +85,7 @@ def ingest(api_token, endpoint_url, access_key, secret_key, bucket, task_id, loa
         "created_at": load_date,
     }
 
-    producer.send(topic=process_data_tasks_topic, value=json.dumps(body).encode("utf-8"), key=task_id.encode("utf-8"))
+    producer.send(topic=process_data_tasks_topic, value=body, key=task_id)
 
     logging.info(f"Process task to processing topic, load_id: {task_id}")
 
